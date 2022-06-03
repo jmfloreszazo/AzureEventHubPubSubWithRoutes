@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+ 
+  sub-microservice:
+    image: ${DOCKER_REGISTRY-}subscriptor
+    build:
+      context: .
+      dockerfile: PubSubDarpSample.Subscriptor/Dockerfile
+    stdin_open: true
+    tty: true
+
+  sub-microservice-dapr:
+    image: "daprio/daprd:1.7.0"
+    network_mode: "service:sub-microservice"
+    depends_on:
+      - sub-microservice
